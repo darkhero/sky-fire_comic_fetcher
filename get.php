@@ -1,5 +1,5 @@
 <?
-function getSkipBeat($val,$t = null ){
+function getSkyfireComic($val,$t = null ){
 	if(!is_null($t)){
 		$url = "http://hotpic.sky-fire.com/Utility/2/{$t}/{$val}.js";
 	}else{
@@ -15,7 +15,7 @@ function getSkipBeat($val,$t = null ){
 	$str = curl_exec($curl)."\n";
 	curl_close($curl);
 
-			//ereg('(http://pic.sky-fire.com/Pic/OnlineComic1/GS-21/[[:alnum:]\/._]*)',$str,$data);
+		// 有時後會 comic.sky-fire.com 會把圖片放在不同的主機
 		preg_match_all('(http://hotpic.sky-fire.com/Pic/OnlineComic[0-9]/[[:alnum:]\/._-]*)',$str,$data);
 	//	preg_match_all('(http://v.sky-fire.com/Temp/[[:alnum:]\/._-]*)',$str,$data);
 			$img_src = $data[1];
@@ -71,9 +71,9 @@ function getSkipBeat($val,$t = null ){
 //mkdir(sprintf('%03d',$_SERVER['argv'][1]));
 mkdir($_SERVER['argv'][1]);
 if(isset($_SERVER['argv'][2])){
-	getSkipBeat($_SERVER['argv'][1],$_SERVER['argv'][2]);
+	getSkyfireComic($_SERVER['argv'][1],$_SERVER['argv'][2]);
 }else{
-	getSkipBeat($_SERVER['argv'][1]);
+	getSkyfireComic($_SERVER['argv'][1]);
 }
 /*
 for($i = 218; $i <= 226; $i++){
