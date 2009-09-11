@@ -1,4 +1,9 @@
-<?
+<?php
+/*
+ * 海賊王 = 2
+ * Bleach = 19
+ * 火影忍者 = 4 
+ */
 function getSkyfireComic($val,$t = null ){
 	if(!is_null($t)){
 		$url = "http://hotpic.sky-fire.com/Utility/2/{$t}/{$val}.js";
