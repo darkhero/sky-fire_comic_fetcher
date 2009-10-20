@@ -1,16 +1,18 @@
+#!/usr/bin/php
 <?php
 /*
  * 海賊王 = 2
  * Bleach = 19
  * 火影忍者 = 4 
  */
-function getSkyfireComic($val,$t = null ){
-	if(!is_null($t)){
-		$url = "http://hotpic.sky-fire.com/Utility/2/{$t}/{$val}.js";
-	}else{
-		$url = "http://hotpic.sky-fire.com/Utility/2/{$val}.js";
+function getSkyfireComic($comic_id,$val,$t = null ){
+	// 建立資料夾.
+	if(!is_dir(dirname(__FILE__).DIRECTORY_SEPARATOR.$val)){
+		mkdir(dirname(__FILE__).DIRECTORY_SEPARATOR.$val);
 	}
-	echo $url;
+	
+	$skyfire_hostname = 'hotpic.sky-fire.com';
+	$url = "http://{$skyfire_hostname}/Utility/{$comic_id}/{$val}.js";
 	$curl = curl_init();
 
 	curl_setopt($curl, CURLOPT_URL, $url.$nowPic);
@@ -18,10 +20,18 @@ function getSkyfireComic($val,$t = null ){
 	curl_setopt($curl, CURLOPT_HEADER, false);
 
 	$str = curl_exec($curl)."\n";
+	$status = curl_getinfo($curl);
+	if($status['http_code'] != 200){
+		$skyfire_hostname = 'coldpic.sky-fire.com';
+
+		$url = "http://{$skyfire_hostname}/Utility/{$comic_id}/{$val}.js";
+		curl_setopt($curl, CURLOPT_URL, $url.$nowPic);
+		$str = curl_exec($curl)."\n";
+	}
 	curl_close($curl);
 
 		// 有時後會 comic.sky-fire.com 會把圖片放在不同的主機
-		preg_match_all('(http://hotpic.sky-fire.com/Pic/OnlineComic[0-9]/[[:alnum:]\/._-]*)',$str,$data);
+		preg_match_all('(http://'.$skyfire_hostname.'/Pic/OnlineComic[0-9]/[[:alnum:]\/._-]*)',$str,$data);
 	//	preg_match_all('(http://v.sky-fire.com/Temp/[[:alnum:]\/._-]*)',$str,$data);
 			$img_src = $data[1];
 
@@ -73,17 +83,7 @@ function getSkyfireComic($val,$t = null ){
 			}
 }
 
-//mkdir(sprintf('%03d',$_SERVER['argv'][1]));
-mkdir($_SERVER['argv'][1]);
-if(isset($_SERVER['argv'][2])){
-	getSkyfireComic($_SERVER['argv'][1],$_SERVER['argv'][2]);
-}else{
-	getSkyfireComic($_SERVER['argv'][1]);
-}
-/*
-for($i = 218; $i <= 226; $i++){
-	mkdir(sprintf('%03d',$i));
-	getSkipBeat(sprintf('%03d',$i));
-}
-*/
-?>
+$comic_id = trim($_SERVER['argv'][1]);
+$set_id = $_SERVER['argv'][2];
+
+getSkyfireComic($_SERVER['argv'][1],$_SERVER['argv'][2]);
