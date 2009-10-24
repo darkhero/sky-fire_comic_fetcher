@@ -4,6 +4,7 @@
  * 海賊王 = 2
  * Bleach = 19
  * 火影忍者 = 4 
+ * Reburn = 256
  */
 function getSkyfireComic($comic_id,$val,$t = null ){
 	// 建立資料夾.
@@ -32,7 +33,9 @@ function getSkyfireComic($comic_id,$val,$t = null ){
 
 		// 有時後會 comic.sky-fire.com 會把圖片放在不同的主機
 		preg_match_all('(http://'.$skyfire_hostname.'/Pic/OnlineComic[0-9]/[[:alnum:]\/._-]*)',$str,$data);
-	//	preg_match_all('(http://v.sky-fire.com/Temp/[[:alnum:]\/._-]*)',$str,$data);
+		if(count($data[0] <= 1)){
+			preg_match_all('(http://v.sky-fire.com/Temp/[[:alnum:]\/._-]*)',$str,$data);
+		}
 			$img_src = $data[1];
 
 			$i = 0;
