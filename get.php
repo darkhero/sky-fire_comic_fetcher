@@ -4,7 +4,8 @@
  * 海賊王 = 2
  * Bleach = 19
  * 火影忍者 = 4 
- * Reburn = 256
+ * 惡魔辯護 = 455
+ * Reborn = 256
  */
 function getSkyfireComic($comic_id,$val,$t = null ){
 	// 建立資料夾.
@@ -14,6 +15,7 @@ function getSkyfireComic($comic_id,$val,$t = null ){
 	
 	$skyfire_hostname = 'hotpic.sky-fire.com';
 	$url = "http://{$skyfire_hostname}/Utility/{$comic_id}/{$val}.js";
+	echo $url."\n";
 	$curl = curl_init();
 
 	curl_setopt($curl, CURLOPT_URL, $url.$nowPic);
@@ -26,6 +28,7 @@ function getSkyfireComic($comic_id,$val,$t = null ){
 		$skyfire_hostname = 'coldpic.sky-fire.com';
 
 		$url = "http://{$skyfire_hostname}/Utility/{$comic_id}/{$val}.js";
+		echo $url."\n";
 		curl_setopt($curl, CURLOPT_URL, $url.$nowPic);
 		$str = curl_exec($curl)."\n";
 	}
@@ -33,11 +36,10 @@ function getSkyfireComic($comic_id,$val,$t = null ){
 
 		// 有時後會 comic.sky-fire.com 會把圖片放在不同的主機
 		preg_match_all('(http://'.$skyfire_hostname.'/Pic/OnlineComic[0-9]/[[:alnum:]\/._-]*)',$str,$data);
-		if(count($data[0] <= 1)){
+		echo count($data[0]);
+		if(count($data[0]) <= 1){
 			preg_match_all('(http://v.sky-fire.com/Temp/[[:alnum:]\/._-]*)',$str,$data);
 		}
-			$img_src = $data[1];
-
 			$i = 0;
 			foreach($data[0] as $img_src){
 				$i++;
