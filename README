@@ -1,0 +1,13 @@
+執行環境需求
+* php-cli
+
+需要的 php 模組
+* pcntl
+* curl
+
+需要的系統工具
+* wget
+
+執行方式:
+以 onepiece.php 為例.
+要抓取 571 回的漫畫內容, 執行 php onepiece.php 571 就會自動抓取回來.
