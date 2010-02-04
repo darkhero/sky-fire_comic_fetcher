@@ -39,16 +39,10 @@ function getSkyfireComic($comic_id,$val,$t = null ){
 			$i = 0;
 			foreach($data[0] as $img_src){
 				$i++;
-				$pid = pcntl_fork();
-				if($pid == -1){
-				    die('could not fork');
-				}else if($pid){
-				    echo 'Fork to '.$pid.' for get '.$img_src."\n";
-				}else{
 				$output_file_name = sprintf('%02d.jpg',$i);
 				if(file_exists($val."/".$output_file_name)){
 					echo $val."/".$output_file_name." File Exists!\n";
-					exit;
+					continue;
 				}
 				$curl = curl_init();
 
@@ -75,11 +69,10 @@ function getSkyfireComic($comic_id,$val,$t = null ){
 					$fp = fopen($val."/".$output_file_name,'w');
 					fputs($fp,$content);
 					fclose($fp);
-					exit;
+					continue;
 				}else{
 					echo "Connect Time Out.Retry \n";
-					exit;
-				}
+					continue;
 				}
 			}
 }
