@@ -1,12 +1,8 @@
 #!/usr/bin/php
 <?php
 /*
- * 海賊王 = 2
- * Bleach = 19
- * 火影忍者 = 4
- * 惡魔辯護 = 455
- * Reborn = 256
- */
+	火影忍者專用抓檔程式
+*/
 function getSkyfireComic($comic_id,$val,$t = null ){
 	// 建立資料夾.
 	if(!is_dir(dirname(__FILE__).DIRECTORY_SEPARATOR.$val)){
