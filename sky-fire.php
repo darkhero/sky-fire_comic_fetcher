@@ -1,4 +1,3 @@
-#!/usr/bin/php
 <?php
 /*
  * 海賊王 = 2
@@ -8,10 +7,15 @@
  * Reborn = 256
  * 結界師 = 74
  */
-function getSkyfireComic($comic_id,$val,$t = null ){
+function getSkyfireComic($comic_id,$val,$target_path = null){
 	// 建立資料夾.
-	if(!is_dir(dirname(__FILE__).DIRECTORY_SEPARATOR.$val)){
-		mkdir(dirname(__FILE__).DIRECTORY_SEPARATOR.$val);
+	if($target_path == null){
+		$target_path = dirname(__FILE__).DIRECTORY_SEPARATOR.$val;
+	}else{
+		$target_path .= DIRECTORY_SEPARATOR.$val;
+	}
+	if(!is_dir($target_path)){
+		mkdir($target_path);
 	}
 	$skyfire_hostnames = array('hotpic.sky-fire.com','coldpic.sky-fire.com','pic2.sky-fire.com');
 
@@ -34,7 +38,7 @@ function getSkyfireComic($comic_id,$val,$t = null ){
 
 	// 有時後會 comic.sky-fire.com 會把圖片放在不同的主機
 	preg_match_all('(http://'.$skyfire_hostname.'/Pic/OnlineComic[0-9]/[[:alnum:]\/._-]*)',$str,$data);
-	echo count($data[0]);
+	echo "本回共".count($data[0])."頁\n";
 	if(count($data[0]) <= 1){
 		preg_match_all('(http://v.sky-fire.com/Temp/[[:alnum:]\/._-]*)',$str,$data);
 	}
@@ -48,8 +52,8 @@ function getSkyfireComic($comic_id,$val,$t = null ){
 			echo 'Fork to '.$pid.' for get '.$img_src."\n";
 		}else{
 			$output_file_name = sprintf('%02d.jpg',$i);
-			if(file_exists($val."/".$output_file_name)){
-				echo $val."/".$output_file_name." File Exists!\n";
+			if(file_exists($target_path."/".$output_file_name)){
+				echo $target_path."/".$output_file_name." File Exists!\n";
 				exit;
 			}
 			$curl = curl_init();
@@ -73,8 +77,8 @@ function getSkyfireComic($comic_id,$val,$t = null ){
 			curl_close($curl);
 
 			if(strlen($content) > 100){
-				echo "Save: ".$val."/".$output_file_name." ".strlen($content)."\n";
-				$fp = fopen($val."/".$output_file_name,'w');
+				echo "Save: ".$target_path."/".$output_file_name." ".strlen($content)."\n";
+				$fp = fopen($target_path."/".$output_file_name,'w');
 				fputs($fp,$content);
 				fclose($fp);
 				exit;
@@ -85,8 +89,3 @@ function getSkyfireComic($comic_id,$val,$t = null ){
 		}
 	}
 }
-
-$comic_id = trim($_SERVER['argv'][1]);
-$set_id = $_SERVER['argv'][2];
-
-getSkyfireComic($_SERVER['argv'][1],$_SERVER['argv'][2]);
